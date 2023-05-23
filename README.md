@@ -1,6 +1,6 @@
 # aws-custom-domain-r53
 
-This repository is an attachment for the blog post: [TODO](TODO)
+This repository is an attachment for the blog post: https://ervinszilagyi.dev/articles/expose-our-rest-api-on-aws-with-a-custom-domain.html
 
 ## Deployment
 
