@@ -78,8 +78,8 @@ resource "aws_api_gateway_stage" "dev_stage" {
 }
 
 resource "aws_api_gateway_domain_name" "custom_domain_name" {
-  regional_certificate_arn  = data.terraform_remote_state.certificate.outputs.validation_certificate_arn
-  domain_name               = var.custom_domain_name
+  regional_certificate_arn = data.terraform_remote_state.certificate.outputs.validation_certificate_arn
+  domain_name              = var.custom_domain_name
 
   endpoint_configuration {
     types = ["REGIONAL"]
@@ -90,4 +90,18 @@ resource "aws_api_gateway_base_path_mapping" "base_path_mapping" {
   api_id      = aws_api_gateway_rest_api.api_gw.id
   stage_name  = aws_api_gateway_stage.dev_stage.stage_name
   domain_name = aws_api_gateway_domain_name.custom_domain_name.domain_name
+}
+
+resource "aws_api_gateway_method_settings" "all" {
+  rest_api_id = aws_api_gateway_rest_api.api_gw.id
+  stage_name  = aws_api_gateway_stage.dev_stage.stage_name
+  method_path = "*/*"
+
+  settings {
+    metrics_enabled = true
+    logging_level   = "ERROR"
+
+    throttling_rate_limit  = 10
+    throttling_burst_limit = 5
+  }
 }
